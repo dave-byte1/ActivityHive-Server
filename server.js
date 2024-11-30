@@ -7,7 +7,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// a test route
+// A test route
 app.get('/', (req, res) => {
     res.send('Hello, Express Server!');
 });
