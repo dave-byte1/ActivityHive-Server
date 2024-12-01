@@ -28,11 +28,11 @@ const client = new MongoClient(uri, {serverApi: ServerApiVersion.v1});
 async function connectToMongoDB() {
     try {
         await client.connect();
-        db = client.db(dbName);
-        console.log(`Connected to MongoDB database: ${dbName}`);
+        db = client.db(dbName); // Assign database object to global 'db' variable
+        console.log(`Connected to MongoDB database: ${dbName}`); // Log successful connection
     } catch (err) {
         console.error('Failed to connect to MongoDB', err);
-        process.exit(1);
+        process.exit(1); // Exit Node.js process in case of failure
     }
 }
 
