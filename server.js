@@ -13,7 +13,7 @@ let propertiesPath = path.resolve(__dirname, 'conf/db.properties');
 let properties = propertiesReader(propertiesPath);
 
 let dbPrefix = properties.get('db.prefix');
-let dbUsername = encodeURIComponent(properties.get('db.users'));
+let dbUsername = encodeURIComponent(properties.get('db.user'));
 let dbPwd = encodeURIComponent(properties.get('db.pwd'));
 let dbName = properties.get('db.dbName');
 let dbUrl = properties.get('db.dbUrl');
