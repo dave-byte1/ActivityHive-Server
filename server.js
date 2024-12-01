@@ -56,7 +56,7 @@ app.param('collectionName', (req, res, next, collectionName) => {
     }
 });
 
-// GET Route
+// Dynamic GET Route
 app.get('/api/:collectionName', async (req, res) => {
     try {
         const documents = await req.collection.find({}).toArray();
@@ -64,6 +64,24 @@ app.get('/api/:collectionName', async (req, res) => {
     } catch (err) {
         console.error('Failed to fetch documents:', err);
         res.status(500).send('Error fetching documents');
+    }
+});
+
+// POST Route to add a new order
+app.post('/api/orders', async (req, res) => {
+    try {
+        const order = req.body; // The order data in request body
+        if (!order || !order.customerName || !order.customerPhone || !order.items || !Array.isArray(order.items)) {
+            return res.status(400).send('Invalid order data'); // Validate the request body
+        }
+
+        const collection = db.collection('orders'); // Access the 'orders' collection
+        const result = await collection.insertOne(order); // Insert the new order
+
+        res.status(201).json({message: 'Order created successfully', orderId: result.insertedId});
+    } catch (err) {
+        console.error('Failed to create order:', err);
+        res.status(500).send('Failed to create order');
     }
 });
 
