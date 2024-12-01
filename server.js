@@ -85,6 +85,33 @@ app.post('/api/orders', async (req, res) => {
     }
 });
 
+// PUT Route to Update Product Details by ID
+app.put('/api/products/:id', async (req, res) => {
+    try {
+        const productId = parseInt(req.params.id, 10);
+        const update = req.body;
+
+        if (!update || typeof update.spaces !== 'number') {
+            return res.status(400).send('Invalid update data');
+        }
+
+        const collection = db.collection('products'); // Access the 'products' collection
+        const result = await collection.updateOne(
+            {id: productId}, // Find the product by its ID
+            {$set: update}   // Update specified fields
+        );
+
+        if (result.matchedCount === 0) {
+            return res.status(404).send('Product not found');
+        }
+
+        res.status(200).json({message: 'Product updated successfully'});
+    } catch (err) {
+        console.error('Failed to update product:', err);
+        res.status(500).send('Failed to update product');
+    }
+});
+
 // Start the server after connecting to MongoDB
 const PORT = 3000;
 connectToMongoDB().then(() => {
