@@ -13,7 +13,7 @@ let propertiesPath = path.resolve(__dirname, 'conf/db.properties');
 let properties = propertiesReader(propertiesPath);
 
 let dbPrefix = properties.get('db.prefix');
-let dbUsername = encodeURIComponent(properties.get('db.user'));
+let dbUsername = encodeURIComponent(properties.get('db.users'));
 let dbPwd = encodeURIComponent(properties.get('db.pwd'));
 let dbName = properties.get('db.dbName');
 let dbUrl = properties.get('db.dbUrl');
@@ -42,7 +42,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// base route
+// Base route
 app.get('/', (req, res) => {
     res.send('Welcome to the ActivityHive API!');
 });
@@ -50,7 +50,7 @@ app.get('/', (req, res) => {
 // app.param Middleware
 app.param('collectionName', (req, res, next, collectionName) => {
     try {
-        req.collection = db.collection(collectionName);
+        req.collection = db.collection(collectionName); // Sets collection to the corresponding collection name
         return next();
     } catch (err) {
         console.error('Invalid collection name:', err);
@@ -61,10 +61,10 @@ app.param('collectionName', (req, res, next, collectionName) => {
 // Dynamic GET Route
 app.get('/api/:collectionName', async (req, res) => {
     try {
-        const documents = await req.collection.find({}).toArray();
+        const documents = await req.collection.find({}).toArray(); // Fetch all documents from collection
         res.status(200).json(documents);
     } catch (err) {
-        console.error('Failed to fetch documents:', err);
+        console.error('Failed to fetch documents:', err); // Log error message if fetch fails
         res.status(500).send('Error fetching documents');
     }
 });
