@@ -2,9 +2,11 @@ const express = require('express');
 const path = require('path');
 const propertiesReader = require('properties-reader');
 const {MongoClient, ServerApiVersion} = require('mongodb');
+const cors = require('cors');
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 // Load database configuration
 let propertiesPath = path.resolve(__dirname, 'conf/db.properties');
